@@ -1,0 +1,109 @@
+import sys
+from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QAction, QLineEdit, QMessageBox, QMainWindow
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot #Creative By Mikroenginer  #M.BURAK BAYRAM
+
+
+class App(QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+        self.title = "VKE Program"
+        self.left = 200
+        self.top = 200
+        self.width = 400
+        self.height = 300
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+        self.setWindowIcon(QIcon('bmi_logo.ico'))
+
+
+        label0 = QLabel(self)
+        label0.setText(
+            "Vücut Kite Endeksi Hesaplama Programı NNYU EEM BP II 2020")
+        label0.setGeometry(0, 80, 1000, 100)
+        label0.move(50, 0)
+
+        label1 = QLabel(self)
+        label1.setText("Boyunuz:")
+        label1.move(30, 95)
+
+        label2 = QLabel(self)
+        label2.setText("kilonuz:")
+        label2.move(30, 145)
+
+
+        self.boy_input = QLineEdit(self)
+        self.boy_input.move(100, 100)
+        self.boy_input.resize(50, 20)
+
+        self.kilo_input = QLineEdit(self)
+        self.kilo_input.move(100, 150)
+        self.kilo_input.resize(50, 20)
+
+
+        self.cal_button = QPushButton("Hesapla", self)
+
+        self.cal_button.move(100, 180)
+
+        label3 = QLabel(self)
+        label3.setText("Tasarım Mehmet Burak BAYRAM")
+        label3.move(10, 275)
+        label3.setFixedWidth(200)
+        label3.show()
+
+        label4 = QLabel(self)
+        label4.setText("kg")
+        label4.move(160, 145)
+
+        label5 = QLabel(self)
+        label5.setText("cm")
+        label5.move(160, 95)
+
+
+        self.cal_button.clicked.connect(self.on_click)
+
+        self.show()
+
+    def on_click(self):
+
+        if str(self.kilo_input.text()) == "" and str(self.boy_input.text()) == "":
+            QMessageBox.warning(self, "Hata ... Hesaplanacak Veri Yok!", "Hiç veri girmediniz. Lütfen tekrar doldurun!", QMessageBox.Ok)
+
+        elif str(self.kilo_input.text()) == "" and str(self.boy_input.text()) != "":
+            QMessageBox.warning(self, "Hata ... Hesaplanacak Veri Yok!", "Hiç veri girmediniz. Lütfen tekrar doldurun!", QMessageBox.Ok)
+
+        elif str(self.boy_input.text()) == "" and str(self.kilo_input.text()) != "":
+            QMessageBox.warning(self, "Hata ... Hesaplanacak Veri Yok!", "Hiç veri girmediniz. Lütfen tekrar doldurun!", QMessageBox.Ok)
+
+        else:
+            weight = float(self.kilo_input.text())
+            height = float(self.boy_input.text())
+            if ((weight / (height * height ))*10000) < 18.5:
+
+                QMessageBox.information(self, 'Sonuç', "BMI sonucunuz:" + str(
+                    '%.1f' % (weight / (height * height) * 10000)) + "\n Katagori: Zayıf", QMessageBox.Ok)
+
+            elif ((weight / (height * height) * 10000)) < 25 and ((weight / (height * height) * 10000)) >= 18.5:
+
+                QMessageBox.information(self, 'Sonuç', "BMI sonucunuz:" + str(
+                    '%.1f' % (weight / (height * height) * 10000)) + "\n Katagori: Normal", QMessageBox.Ok)
+
+
+            elif ((weight / (height * height) * 10000)) < 30 and ((weight / (height * height) * 10000)) >= 25:
+
+                QMessageBox.information(self, 'Sonuç', "BMI sonucunuz:" + str(
+                    '%.1f' % (weight / (height * height) * 10000)) + "\n Katagori: kilolu", QMessageBox.Ok)
+
+            else:
+                QMessageBox.information(self, 'Sonuç', "BMI sonucunuz:" + str(
+                    '%.1f' % (weight / (height * height) * 10000)) + "\n Katagori: Obez", QMessageBox.Ok)
+
+if __name__ == '__main__':
+            app = QApplication(sys.argv)
+            ex = App()
+            sys.exit(app.exec_())
